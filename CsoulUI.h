@@ -16,6 +16,9 @@ private:
 public:
 	CsoulUI(std::string title, std::string ver);
 
+  std::string getTitle();
+  std::string getVersion();
+
 	std::string help();
 
 	void createCommand(std::string s, std::function<void(std::string)> f);
