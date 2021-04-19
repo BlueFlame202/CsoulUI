@@ -8,10 +8,10 @@
 class CsoulUI
 {
 private:
-  std::string m_title;
-  std::string m_ver;
+  std::string m_title; // title of the program using CSoulUI (primary program)
+  std::string m_ver; // version of the primary program
 
-  std::unordered_map<std::string, std::function<void(std::string)>> m_commandMap;
+  std::unordered_map<std::string, std::pair<std::string, std::function<void(std::string)>>> m_commandMap; // stores function names, info and corresponding functions
 
 public:
   CsoulUI(std::string title, std::string ver);
@@ -21,7 +21,7 @@ public:
 
   std::string help();
 
-  void createCommand(std::string s, std::function<void(std::string)> f);
+  void createCommand(std::string s, std::string info, std::function<void(std::string)> f);
 
   void listen();
   void respond(std::string command, std::string args);

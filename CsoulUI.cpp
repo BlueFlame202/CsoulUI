@@ -3,8 +3,8 @@
 CsoulUI::CsoulUI(std::string title, std::string ver)
 {
   std::cout << "[CsoulUI]: Initializing " << title << " " << ver << std::endl;
-  m_commandMap["HELP"] = [](std::string s) { return; };
-  m_commandMap["SOULSLEEP"] = [](std::string s) { return; };
+  m_commandMap["HELP"] = std::make_pair("displays a list of commands", [](std::string s) { return; });
+  m_commandMap["SOULSLEEP"] = std::make_pair("ends CSoulUI", [](std::string s) { return; });
 }
 
 std::string CsoulUI::getTitle()
@@ -21,15 +21,15 @@ std::string CsoulUI::help()
 {
   std::string res = "[CsoulUI]: A List of Commands:\n";
   for (auto v : m_commandMap)
-    res += v.first + "\n";
+    res += v.first + ": " + v.second.first + "\n";
   return res;
 }
 
-void CsoulUI::createCommand(std::string s, std::function<void(std::string)> f)
+void CsoulUI::createCommand(std::string s, std::string info, std::function<void(std::string)> f)
 {
-  if (m_commandMap[s])
+  if (m_commandMap[s].second)
     std::cout << "[CsoulUI]: WARNING! Command " << s << " is being overwritten!";
-  m_commandMap[s] = f;
+  m_commandMap[s] = std::make_pair(info, f);
 }
 
 void CsoulUI::listen()
@@ -47,12 +47,12 @@ void CsoulUI::respond(std::string command, std::string args)
 {
   if (command == "HELP") std::cout << help() << std::endl;
   else if (command == "SOULSLEEP") return;
-  else if (!m_commandMap[command]) 
+  else if (!m_commandMap[command].second) 
     std::cout << "[CsoulUI]: ERROR! Command " << command << " not recognized." << std::endl;
   else
   {
     std::cout << "[CsoulUI]: ";
-    m_commandMap[command](args);
+    m_commandMap[command].second(args);
     std::cout << std::endl;
   }
   listen();
