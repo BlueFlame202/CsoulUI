@@ -6,7 +6,7 @@ CsoulUI::CsoulUI(std::string title, std::string ver)
   
   // define defaults so that if they get overwritten we get a warning, and also so that we can have a nice description
   m_commandMap["HELP"] = std::make_pair("displays a list of commands", [](std::string s) { return; });
-  m_commandMap["SOULSLEEP"] = std::make_pair("ends CSoulUI", [](std::string s) { return; });
+  m_commandMap["SOULSLEEP"] = std::make_pair("ends CsoulUI", [](std::string s) { return; });
 }
 
 std::string CsoulUI::getTitle()
@@ -48,7 +48,11 @@ void CsoulUI::listen()
 void CsoulUI::respond(std::string command, std::string args)
 {
   if (command == "HELP") std::cout << help() << std::endl;
-  else if (command == "SOULSLEEP") return; // break out of the listen-respond loop
+  else if (command == "SOULSLEEP") 
+  {
+    std::cout << "[CsoulUI]: Terminating " << m_title << " " << m_ver << std::endl;
+    return; // break out of the listen-respond loop
+  }
   else if (!m_commandMap[command].second) 
     std::cout << "[CsoulUI]: ERROR! Command " << command << " not recognized." << std::endl;
   else
